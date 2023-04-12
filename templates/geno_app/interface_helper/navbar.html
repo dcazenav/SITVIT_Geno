@@ -1,0 +1,151 @@
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<nav class="navbar navbar-expand-md navbar-light" style="background-color: lightskyblue">
+    <a class="navbar-brand" href="{% url 'home' %}">Sitvit_Geno</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto justify-content-center">
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fa fa-home"></i> Home</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'database_description' %}"> Database description</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class='fa fa-search'></i> Search</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" style="color: red" href="#"><i class='fa fa-cog'></i> Analysis</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class='fa fa-wrench'></i> Online Tools</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+    $(".nav .nav-link").on("click", function(){
+       $(".nav").find(".active").removeClass("active");
+       $(this).addClass("active");
+    });
+</script>
+
+
+{% comment %}
+<style>
+    * {
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #131416;
+}
+
+nav {
+  background-color: #fff;
+  padding: 0 20px;
+  border-radius: 40px;
+  box-shadow: 0 10px 40px rgba(159, 162, 177, .8);
+  display: flex;
+  overflow: hidden;
+  overflow-x: auto;
+  position: relative;
+}
+
+.nav-item {
+  color: #83818c;
+  font-family: arial, sans-serif;
+  padding: 20px;
+  margin: 0 6px;
+  position: relative;
+}
+
+.nav-item:before {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  background-color: #dfe2ea;
+  height: 5px;
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  left: 0;
+  transition: .3s;
+}
+
+.nav-item:not(.is-active):hover:before {
+  bottom: 0;
+}
+.nav-item:not(.is-active):hover {
+  color: #333;
+}
+
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 5px;
+  transition: .4s;
+  border-radius: 8px 8px 0 0;
+}
+</style>
+
+<nav>
+  <a href="#" class="nav-item is-active" data-active-color="orange" data-target="Home">Home</a>
+  <a href="#" class="nav-item" data-active-color="green" data-target="About">About</a>
+  <a href="#" class="nav-item" data-active-color="blue" data-target="Testimonials">Testimonials</a>
+  <a href="#" class="nav-item" data-active-color="red" data-target="Blog">Blog</a>
+  <a href="#" class="nav-item" data-active-color="rebeccapurple" data-target="Contact">Contact</a>
+  <span class="nav-indicator"></span>
+</nav>
+
+<script>
+    const indicator = document.querySelector('.nav-indicator');
+const items = document.querySelectorAll('.nav-item');
+
+function handleIndicator(el) {
+  // Boucler sur tous items -> retirer la classe "is-active"
+  items.forEach(item => {
+    item.classList.remove('is-active');
+    item.removeAttribute('style');
+  })
+
+  const elementColor = el.dataset.activeColor;
+  const target = el.dataset.target;
+
+  console.log(target);
+
+  // Styliser l'indicateur
+  indicator.style.width = `${el.offsetWidth}px`;
+  indicator.style.backgroundColor = elementColor;
+  indicator.style.left = `${el.offsetLeft}px`;
+
+  // Ajout la classe is-active
+  el.classList.add('is-active');
+  el.style.color = elementColor;
+}
+
+items.forEach((item, index) => {
+  item.addEventListener('click', e => {
+    handleIndicator(e.target)
+  });
+  item.classList.contains('is-active') && handleIndicator(item);
+});
+</script>{% endcomment %}
