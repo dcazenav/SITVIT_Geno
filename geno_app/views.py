@@ -15,3 +15,6 @@ def database_description(request):
 
 def search(request):
     return render(request, "../templates/geno_app/application/search.html", locals())
+
+def analysis(request):
+    return render(request, "../templates/geno_app/application/analysis.html", locals())

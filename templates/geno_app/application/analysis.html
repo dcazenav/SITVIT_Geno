@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    {% load static %}
+    <head>
+        {% block head %}
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <link rel="shortcut icon" href="../../static/img/karubionet2favicon.png" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../../static/css/wrimagecard.css">
+{% comment %}
+        <link rel="stylesheet" href="../static/css/phylotree.css.tmp">
+{% endcomment %}
+        {% endblock %}
+        <title>Analysis</title>
+
+        <style>
+            h1 {
+              text-align: center;
+            }
+        </style>
+    {%block javascripts %}
+    <script type="application/javascript">
+
+            function show(shown, hidden) {
+              document.getElementById(shown).style.display='block';
+              document.getElementById(hidden).style.display='none';
+              return false;
+            }
+
+    </script>
+    {% endblock %}
+    </head>
+
+    <body>
+    {% include 'geno_app/interface_helper/navbar.html' %}
+
+
+        <div class="container-fluid" style="background-color: #ffffff;" >
+        <!--BANDEAU -->
+            <div class="container" id="Page1" style="background-color: #ffffff;">
+                <a href="http://www.pasteur-guadeloupe.fr/karubionet.html" target="_blank" col></a>
+
+                <!--DEBUT TABULATIONS -->
+                    <div class="col-lg-12" style="padding-top: 70px;">
+                        <h1 >Analyze your data file</h1>
+                            </br>
+                        </br>
+                    </br>
+
+                <div style="text-align: center;">
+                        <table class="footer" width="100%" border="0">
+
+                        </table>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <p>Download and fill this <a href="{% static 'files/Analysis_protocol_SITVIT_Bovis.xls' %}">Excel File</a> with your data, then upload it to search for similar profiles in SITVIT Bovis. If you are using a recent version of Microsof Excel, please convert your file to Excel 2003 or XLS format (XLSX files are not allowed in this analysis).</p>
+                                <p>Make sure that you are strictly respecting the good format for all Spoligotype and MIRU-VNTRs markers.</p>
+                                <p>If you entered your spoligotype patterns at the binary format (o/n), it will be automatilcally converted into the octal format and vice versa. Note that the order of loci for MIRU-VNTRs are as follows:</p>
+
+                                <div>
+                                <ul>
+                                    <li> 5-locus Exact Tandem Repeats (ETRs) or VNTR order: A, B, C, D, and E.</li>
+                                    <li> MIRU12 order: MIRU 2-4-10-16-20-23-24-26-27-31-39- and 40.</li>
+                                    <li> MIRU15 order: MIRU 4, 10, 16, 26, 31, and 40, ETR-A, ETR-C, QUB-11b, QUB-26, QUB-4156, Mtub04, Mtub21, Mtub30, and Mtub39.</li>
+                                </ul>
+                                </div>
+                                <p>Furthermore, the MIRU-VNTRs loci labeled by letters A, B, C ... indicate respectively 10, 11, or 12 etc... number of copies.</p>
+                                <p>Correspondance nomenclature between designations of MIRUs/ETRs/QUBs/Mtubs and VNTRs loci is visible as an <a href="{% static 'files/Correspondance_MIRUs_VNTRs.xls' %}">Excel File</a> or as a <a href="files/Correspondance_MIRUs_VNTRs.png" target="_blank">PNG figure</a>.</p>
+                                <br>
+                                <p>Although 24-loci MIRU_VNTRs were not taken into account in this database, we strongly encourage contributors to submit their data with all 24-loci MIRU-VNTRs scheme, by referring to "<a href="http://www.pasteur-guadeloupe.fr:8081/SITVIT2/submit.jsp" target="_blank">STIVIT2 Submit page</a>".</p>
+
+
+                            <form action="upload" enctype="multipart/form-data" method="post" id="queryForm">
+                                  <table id="canvas" border="0">
+                                  <tbody><tr>
+                                  <td><input name="batchFile" type="file" title="Choose a file"></td>
+
+
+                                  <td width="100px" align="right">
+                                    <input type="submit" value="Upload">
+                        <!--		  	<input type="button" onclick="submitQuery1();" value="Upload"/>-->
+                                    <input type="hidden" name="action" value="batchSearch">
+
+                                    <input id="doExportXLS" type="hidden" name="exportXLS" value="false">
+
+                                    <input id="doBatchSearch" type="hidden" name="doBatchSearch" value="true">
+                                    <input id="changeView" type="hidden" name="changeView" value="false">
+                                  </td>
+
+                                  </tr>
+
+                                  </tbody></table>
+                                <p>&nbsp;</p>
+                                </form>
+
+                                <!-- <iframe id="upload_targetID" name="upload_target"  style="width:0;height:0;border:0px solid #fff;" ></iframe>-->
+
+
+                                    <h4 align="center">Analysis of your File</h4>
+                                 <div id="table_div_alfa">
+                                     <div class="google-visualization-table" style="position: relative; z-index: 0; max-width: 100%; max-height: 100%;">
+                                         <div style="position: relative; overflow: auto; max-width: 100%; max-height: 100%;">
+                                             <table class="table" cellspacing="0">
+                                                 <thead>
+                                                 <tr class="table-primary"><th class="google-visualization-table-th gradient">&nbsp;</th><th class="google-visualization-table-th gradient">Strain</th><th class="google-visualization-table-th gradient">Spoligotype43</th><th class="google-visualization-table-th gradient">SIT</th><th class="google-visualization-table-th gradient">SB-number</th><th class="google-visualization-table-th gradient">Lineage</th><th class="google-visualization-table-th gradient">Miru12</th><th class="google-visualization-table-th gradient">12-MIT</th><th class="google-visualization-table-th gradient">Miru15</th><th class="google-visualization-table-th gradient">15-MIT</th><th class="google-visualization-table-th gradient">VNTR</th><th class="google-visualization-table-th gradient">VIT</th><th class="google-visualization-table-th gradient">Comments</th></tr></thead><tbody></tbody></table></div></div></div>
+                                 <p>Not defined (ND) statement indicates that a spoligotype or MIRU pattern does not exist in our database (i.e. this profile could be either null, an orphan, or a new pattern not yet reported in our database).</p>
+                                 <!-- Partie code permettant de Exporter File Excel -->
+                                 <form action="upload2" enctype="multipart/form-data" method="post">
+
+                                 <div align="center">
+                                 <input type="hidden" name="action" value="UploadbatchSearch">
+                                 <input id="doExportXLS" type="hidden" name="exportXLS" value="true">
+                                 <input type="submit" value="Export to Excel">
+                                 </div>
+
+                                 </form>
+                    </div>
+                </div>
+        </div>
+        </div>
+        <!--FIN PIED DE PAGE -->
+
+          <!-- JS bootstrap-->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/v/dt/dt-1.10.13/se-1.2.0/datatables.min.js"></script>
+
+
+    </body>
+</html>
