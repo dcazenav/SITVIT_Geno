@@ -18,3 +18,6 @@ def search(request):
 
 def analysis(request):
     return render(request, "../templates/geno_app/application/analysis.html", locals())
+
+def online_tools(request):
+    return render(request, "../templates/geno_app/application/online_tools.html", locals())

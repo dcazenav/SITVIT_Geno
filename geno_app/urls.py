@@ -10,5 +10,6 @@ urlpatterns = [
                   path('database_descriptions/', views.database_description, name='database_description'),
                   path('search/', views.search, name='search'),
                   path('analysis/', views.analysis, name='analysis'),
+                  path('online_tools/', views.online_tools, name='online_tools'),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
