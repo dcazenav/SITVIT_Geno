@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
         <link rel="stylesheet" href="../../static/css/wrimagecard.css">
 {% comment %}
@@ -27,51 +27,8 @@
               margin-right: auto;
             }
 
-            .cellule {
-              padding-bottom: 1px;
-              padding-top: 1px;
-              padding-left: 5px;
-              padding-right: 5px;
-              background-color: #87CEFA;
-              color: #324395;
-              font-weight: bold;
-            }
-
-            .entete{
-              padding-bottom: 1px;
-              padding-top: 1px;
-              padding-right: 5px;
-              padding-left: 5px;
-              font-weight: bold;
-              background-color: #bacbe6;
-              color: #164606;
-              font-size: 14px;
-            }
-
-            input.green {
-              background-color: #87CEFA;
-              font-weight: bold;
-              font-size: 1.2em;
-              width: 800px;
-            }
-
-            tfoot input {
-                width: 100%;
-                padding: 3px;
-                box-sizing: border-box;
-            }
         </style>
-    {%block javascripts %}
-    <script type="application/javascript">
 
-            function show(shown, hidden) {
-              document.getElementById(shown).style.display='block';
-              document.getElementById(hidden).style.display='none';
-              return false;
-            }
-
-    </script>
-    {% endblock %}
     </head>
 
     <body>
@@ -81,14 +38,15 @@
         <div class="container-fluid" style="background-color: #ffffff;" >
         <!--BANDEAU -->
             <div class="container" id="Page1" style="background-color: #ffffff;">
-                <a href="http://www.pasteur-guadeloupe.fr/karubionet.html" target="_blank" col></a>
-
                 <!--DEBUT TABULATIONS -->
                     <div class="col-lg-12" style="padding-top: 70px;">
-                        <h1 >Fill your search criteria</h1>
+                        <h1>Explore the SITVITgeno database (fill your search criteria)</h1>
+                                </br>
                             </br>
                         </br>
-                    </br>
+                    </div>
+            </div>
+
 
                 <div style="text-align: center;">
 {#                    <div class="row justify-content-center">#}
@@ -125,147 +83,50 @@
                             {% endif %}
                             {% endfor %}
                             </tbody>
+                        {% for souchefile in souchefiles %}
+                            {% if forloop.first %}
+                            <tfoot>
+                                <tr>
+                                    <th>{{souchefile.RunName}}</th>
+                                     <th>{{souchefile.SpoligoType_MiruHero}}</th>
+                                     <th>{{souchefile.SpoligoType_Spotyping}}</th>
+                                     <th>{{souchefile.MiruType_MiruHero}}</th>
+                                     <th>{{souchefile.MiruType_mirureader}}</th>
+                                     <th>{{souchefile.Lineage_MiruHero}}</th>
+                                     <th>{{souchefile.Lineages_tbprofiler}}</th>
+                                     <th>{{souchefile.Resistance_tbprofiler}}</th>
+                                     <th>{{souchefile.Family_SpolLineages}}</th>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                            </tfoot>
                         </table>
                     </div>
-                </div>
-{#                <div class="row justify-content-center">#}
-{#                    {% csrf_token %}#}
-{#                    <table>#}
-{##}
-{#                        <tbody>#}
-{#                            <tr>#}
-{#                            {% for souchefile in souchefiles %}#}
-{##}
-{##}
-{#                            {% endfor %}#}
-{#                            </tr>#}
-{#                        </tbody>#}
-{#                    </table>#}
-{#                </div>#}
+        </div>
 
-{#                <div class="row justify-content-center">#}
-{#                    <div class="col-auto">#}
-{#                        <form onkeypress="if(enter_pressed(event)){ submitQuery() };" onsubmit="return false;" method="post" id="queryForm">#}
-{##}
-{#                            <table id="canvas" border="0" class="table">#}
-{#                                <tbody>#}
-{##}
-{#                                    <tr id="ISO">#}
-{#                                    <!-- IsoNumber -->#}
-{#                                        <td class="entete" align="left">IsoNumber</td>#}
-{#                                        <td class="cellule"><input name="isoNumber" id="isoNumber" type="text" size="10" maxlength="90" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;"></td>#}
-{##}
-{#                                        <!-- Strain Name -->#}
-{#                                        <td class="entete" align="left">Strain Name</td>#}
-{#                                        <td class="cellule"><input name="strainName" id="strainName" type="text" size="10" maxlength="90"></td>#}
-{##}
-{#                                        <!-- Spoligotype -->#}
-{#                                        <td class="entete" align="left">Spoligotype</td>#}
-{#                                        <td class="cellule"><input name="spoligo" id="spoligo" type="text" size="10" maxlength="90"></td>#}
-{##}
-{#                                        <!-- SIT -->#}
-{#                                        <td class="entete" align="left">SIT</td>#}
-{#                                        <td class="cellule"><input name="sit" id="sit" type="text" size="5" maxlength="7"></td>#}
-{##}
-{#                                        <!-- SB Number -->#}
-{#                                        <td class="entete" align="left">SB number (Mbovis.org)</td>#}
-{#                                        <td class="cellule"><input name="sb" id="sb" type="text" size="10" maxlength="10"></td>#}
-{##}
-{##}
-{#                                    </tr>#}
-{##}
-{#                                    <tr>#}
-{#                                        <!-- 5-locus ETRs -->#}
-{#                                        <td class="entete" align="left">5-locus ETRs (VNTR)</td>#}
-{#                                        <td class="cellule"><input name="vntr" id="vntr" type="text" size="5" maxlength="5"></td>#}
-{##}
-{#                                        <!-- 12-loci MIRU -->#}
-{#                                        <td class="entete" align="left">12-loci MIRU</td>#}
-{#                                        <td class="cellule"><input name="miru" id="miru" type="text" size="10" maxlength="12"></td>#}
-{##}
-{#                                        <!-- 15-loci MIRU -->#}
-{#                                        <td class="entete" align="left">15-loci MIRU</td>#}
-{#                                        <td class="cellule"><input name="miru15" id="miru15" type="text" size="10" maxlength="15"></td>#}
-{##}
-{#                                        <!-- VIT -->#}
-{#                                        <td class="entete" align="left">VIT</td>#}
-{#                                        <td class="cellule"><input name="vit" id="vit" type="text" size="5" maxlength="7"></td>#}
-{##}
-{#                                        <!-- 12-MIT -->#}
-{#                                        <td class="entete" align="left">12-MIT</td>#}
-{#                                        <td class="cellule"><input name="mit" id="mit" type="text" size="5" maxlength="10"></td>#}
-{##}
-{#                                    </tr>#}
-{##}
-{#                                    <tr>#}
-{#                                        <!-- 15-MIT -->#}
-{#                                        <td class="entete" align="left">15-MIT</td>#}
-{#                                        <td class="cellule"><input name="mit15" id="mit15" type="text" size="5" maxlength="10"></td>#}
-{##}
-{#                                        <!-- Lineage -->#}
-{#                                        <td class="entete" align="left">Lineage</td>#}
-{#                                        <td class="cellule"><input name="lineage" id="lineage" type="text" size="10" maxlength="90"></td>#}
-{##}
-{#                                        <!-- Origin Country -->#}
-{#                                        <td class="entete" align="left">Origin Country</td>#}
-{#                                        <td class="cellule"><input name="ori" id="ori" type="text" size="10" maxlength="90"></td>#}
-{##}
-{#                                        <!-- Isolation Country -->#}
-{#                                        <td class="entete" align="left">Isolation Country</td>#}
-{#                                        <td class="cellule"><input name="iso" id="iso" type="text" size="10" maxlength="90"></td>#}
-{##}
-{#                                        <!-- Year -->#}
-{#                                        <td class="entete" align="left">Year</td>#}
-{#                                        <td class="cellule"><input name="year" id="year" type="text" size="4" maxlength="4"></td>#}
-{#                                    </tr>#}
-{##}
-{#                                    <tr>#}
-{#                                        <!-- Host -->#}
-{#                                        <td class="entete" align="left">Host</td>#}
-{#                                        <td class="cellule"><input name="host" id="host" type="text" size="10" maxlength="90"></td>#}
-{##}
-{#                                        <!-- Drug R -->#}
-{#                                        <td class="entete" align="left">Drug Resistance</td>#}
-{#                                        <td class="cellule"><select name="drug" id="drug"><option value=""></option><option value="0">Unknown(0)</option><option value="1">Susceptible(1)</option> <option value="3">Resistant(3)</option> <option value="2">MDR(2)</option> <option value="4">XDR(4)</option></select></td>#}
-{##}
-{#                                        <!-- Sex -->#}
-{#                                        <td class="entete" align="left">Sex</td>#}
-{#                                        <td class="cellule">  <select name="sex" id="sex"><option value=""></option><option value="F">Female(F)</option> <option value="M">Male(M)</option></select> </td>#}
-{##}
-{#                                        <!-- Age -->#}
-{#                                        <td class="entete" align="left">Age</td>#}
-{#                                        <td class="cellule"> <input name="age" id="age" type="text" size="3" maxlength="4"> </td>#}
-{##}
-{#                                        <!-- Investigator -->#}
-{#                                        <td class="entete" align="left">Investigator</td>#}
-{#                                        <td class="cellule"><input name="inves" id="inves" type="text" size="10" maxlength="90"></td>#}
-{#                                    </tr>#}
-{#                                    <tr></tr>#}
-{#                                    <tr>#}
-{#                                        <td colspan="9" align="center"><input class="green" type="button" onclick="submitQuery();" value="Submit"></td>#}
-{#                                        <td>#}
-{#                                            <input type="reset" onclick="clearPage();" value="Reset">#}
-{#                                        </td>#}
-{##}
-{#                                    </tr>#}
-{#                                    {% comment %}<tr>#}
-{#                                        <td>#}
-{#                                            <input type="hidden" name="action" value="validationFormulaire">#}
-{#                                            <input id="doExportXLS" type="hidden" name="exportXLS" value="false">#}
-{#                                            <input id="doGeoRepart" type="hidden" name="doGeoRepart" value="false">#}
-{#                                            <input id="changeView" type="hidden" name="changeView" value="false">#}
-{#                                        </td>#}
-{#                                    </tr>{% endcomment %}#}
-{#                                </tbody>#}
-{#                            </table>#}
-{#                        </form>#}
-{#                    </div>#}
-{#                </div>#}
-        </div>
-        </div>
-        <!--FIN PIED DE PAGE -->
+          <!-- JS bootstrap-->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+{#        <script src="https://cdn.datatables.net/v/dt/dt-1.10.13/se-1.2.0/datatables.min.js"></script>#}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</body>
+{%block javascripts %}
+
+            <!--FIN PIED DE PAGE -->
                 <script type="application/javascript">
                     new DataTable('#example', {
+                        fixedColumns: true,
+                        scrollCollapse: true,
+                        scrollX: true,
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel'
+                        ],
                         initComplete: function () {
                             this.api()
                                 .columns()
@@ -288,14 +149,5 @@
                         }
                     });
                 </script>
-          <!-- JS bootstrap-->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/v/dt/dt-1.10.13/se-1.2.0/datatables.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-
-    </body>
+    {% endblock %}
 </html>
