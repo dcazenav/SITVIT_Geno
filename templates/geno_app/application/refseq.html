@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Refseq</title>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container" style="margin-bottom: 1em;">
+    <div style="margin-top: 1em;">
+        {% if error %}
+         <div class="row">
+            <p class="text-danger"><strong>Le format du fichier est invalide.</strong></p>
+         </div>
+        {% endif %}
+         <div class="row">
+            <div class="col-md-12">
+                <form id="form_file" method="post" action="#" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group files">
+                        <label class="text-primary">Upload Your File</label>
+                        <input name="csv_file" id="csv_file" type="file" class="form-control" >
+                    </div>
+                    <button id="button_file" name="import" type="submit" class="offset-md-6 btn btn-primary" hidden="hidden"> Load File </button>
+
+                    <div class="row">
+                        <div class="text-center">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script>
+
+    document.getElementById("csv_file").onchange = function() {
+        document.getElementById("button_file").click();
+    }
+</script>
+{% if info_submit %}
+
+<br>
+    <div id="tab_data" class="row" style="position: relative; table-layout: auto;">
+    <div id="content">
+{#            {% include 'phylEntropy/message.html' %}#}
+        </div>
+        <form id="form1" autocomplete="off" method="POST" action="" >
+            {% csrf_token %}
+            <table id="example" style="width:100%;" class="display table table-striped table-bordered table-hover responsive nowrap cell-border compact stripe" cellspacing="0" cellpadding="0">
+            {% for row in fichier %}
+            {% if forloop.first %}
+
+                <thead>
+                     <tr>
+                        <!-- Ajout checkboxes "select all"
+                        <input type="checkbox" id="option-all" onchange="checkAll(this)">-->
+                        <input type="checkbox" id="option-all" >
+                        <label for="option-all">Select All</label>
+                        <br>
+
+{% comment %}
+                         <div class="text-center">
+                            <button name="store" type="button" id="store" class="col-md-3 btn btn-primary" > Store value</button>
+                            <button name="reset" type="button" id="reset" class="col-md-3 btn btn-primary" > Reset value</button>
+                        </div>{% endcomment %}
+                     </tr>
+                        <br>
+                        <!-- Fin ajout-->
+                     <tr id="test_head">
+                        {% for column in row %}
+                            <th id="name_head">{{column}}</th>
+                        {% endfor %}
+                    </tr>
+                    </tr>
+
+                    <tr class="column-selector">
+                        {% for column in row %}
+                            <th > <input type="checkbox"> </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% else %}
+                    <tr>
+                    {% for column in row %}
+                        <td>{{column}}</td>
+                    {% endfor %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        <script>
+            $(document).ready(function() {
+                $(".dropdown-toggle").dropdown();
+                });
+        </script>
+
+            <!--le onclick permet de savoir le nom du button submited-->
+        <div class="m-4">
+            <div class="card text-center">
+                <div class="card-header">
+                    Choose an analysis option
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab">
+                        <li class="nav-item active">
+                            <a href="#genomics" class="nav-link active" data-bs-toggle="tab">Genomics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#graph" class="nav-link" data-bs-toggle="tab">Graphs/Trees</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#statistics" class="nav-link" data-bs-toggle="tab">Statistics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#maps" class="nav-link" data-bs-toggle="tab">Maps</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#metrics" class="nav-link" data-bs-toggle="tab">Metrics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#machinelearning" class="nav-link" data-bs-toggle="tab">Machine Learning</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#fuzzylogic" class="nav-link" data-bs-toggle="tab">Fuzzy Logic</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="genomics">
+                            <h5 class="card-title">Instructions about how to launch</h5> <i class="fa fa-question-circle fa-spin" style="color: #e01b24;"></i>
+                            <p class="card-text">To test, "gene.csv" or "pyge.csv" then click on Select All > the option you want to use.</p>
+                            <input id="submit23" name="pyGenomeViz"   class="btn btn-secondary" type="submit" value="pyGenomeViz" onclick="this.form.submited=this.value;" >
+                            <input id="submit24" name="CGView"   class="btn btn-secondary" type="submit" value="CGView" onclick="this.form.submited=this.value;" >
+                       </div>
+                        <div class="tab-pane fade" id="graph">
+                            <h5 class="card-title">Instructions about how to launch</h5>
+                            <p class="card-text">To test, use "exemple2.csv" then click on Select All > the option you want to use.</p>
+                            <input id="submit1" name="kruskal" class="btn btn-primary" type="submit" value="Minimun Spanning Tree" onclick="this.form.submited=this.value;" >
+                            <input id="submit2" name="upgma"   class="btn btn-primary" type="submit" value="UPGMA" onclick="this.form.submited=this.value;" >
+                            <input id="submit3" name="neighbor-joining"   class="btn btn-primary" type="submit" value="Neighbor-Joining" onclick="this.form.submited=this.value;" >
+                            <input id="submit12" name="Wordcloud"   class="btn btn-secondary" type="submit" value="Wordcloud" onclick="this.form.submited=this.value;" >
+                            <input id="submit22" name="Pie Chart"   class="btn btn-primary" type="submit" value="Pie Chart" onclick="this.form.submited=this.value;" >
+                            <input id="submit26" name="Pie Chart with proportion"   class="btn btn-primary" type="submit" value="Pie Chart with proportion" onclick="this.form.submited=this.value;" >
+
+                        </div>
+                        <div class="tab-pane fade" id="statistics">
+                            <h5 class="card-title">Instructions about how to launch</h5>
+                            <p class="card-text">To test, use "exemple2.csv" then click on Select All then uncheck "ID", "Type" and "Location" > the option you want to use.</p>
+                            <input id="submit4" name="boxplot"   class="btn btn-primary" type="submit" value="Boxplot" onclick="this.form.submited=this.value;" >
+                            <input id="submit5" name="heatmap"   class="btn btn-primary" type="submit" value="Heatmap" onclick="this.form.submited=this.value;" >
+                        </div>
+                        <div class="tab-pane fade" id="maps">
+                            <h5 class="card-title">Instructions about how to launch</h5>
+                            <p class="card-text">To test, use "exemple2.csv" then click on Select All > the option you want to use.</p>
+                            <input id="submit8" name="Global Map"   class="btn btn-warning" type="submit" value="Global Map" onclick="this.form.submited=this.value;" >
+                            <input id="submit11" name="Global City Map"   class="btn btn-primary" type="submit" value="Global City Map" onclick="this.form.submited=this.value;" hidden="hidden">
+                        </div>
+                        <div class="tab-pane fade" id="metrics">
+                            <h5 class="card-title">Instructions about how to launch</h5>
+                            <p class="card-text">To test, "exemple2.csv" or "spol43.csv" Select All > then click on the option you want to use.</p>
+                            <input id="submit7" name="Entropy"   class="btn btn-primary" type="submit" value="Entropy" onclick="this.form.submited=this.value;" >
+                            <input id="submit9" name="Hunter-Gaston"   class="btn btn-secondary" type="submit" value="Hunter-Gaston" onclick="this.form.submited=this.value;" >
+                            <input id="submit10" name="Shannon-Entropy"   class="btn btn-secondary" type="submit" value="Shannon-Entropy" onclick="this.form.submited=this.value;" >
+                       </div>
+                        <div class="tab-pane fade" id="machinelearning">
+                            <h5 class="card-title">Instructions about how to launch</h5>
+                            <p class="card-text">To test, use "spol43.csv" Select All > then click on the option you want to use.</p>
+                            <div class="dropdown text-center">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                Supervized Learning
+                                </button>
+                                <div class="dropdown-menu">
+                                    <input id="submit12" name="Decision Tree" type="submit" value="Decision Tree" onclick="this.form.submited=this.value;" >
+                                    <input id="submit13" name="Support Vector Machines" type="submit" value="Support Vector Machines" onclick="this.form.submited=this.value;" >
+                                    <input id="submit14" name="Random Forest" type="submit" value="Random Forest" onclick="this.form.submited=this.value;" >
+                                    <input id="submit15" name="Extra Trees" type="submit" value="Extra Trees" onclick="this.form.submited=this.value;" >
+                                    <input id="submit16" name="Ada Boost" type="submit" value="Ada Boost" onclick="this.form.submited=this.value;" >
+                                    <input id="submit17" name="K Neighbors" type="submit" value="K Neighbors" onclick="this.form.submited=this.value;" >
+                                    <input id="submit18" name="Nayve Bayes" type="submit" value="Nayve Bayes" onclick="this.form.submited=this.value;" >
+                                </div>
+
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                Unsupervized Learning
+                                </button>
+                                <div class="dropdown-menu">
+                                    <input id="submit6" name="pca" type="submit" value="PCA" onclick="this.form.submited=this.value;" >
+                                    <input id="submit19" name="h_clust" type="submit" value="h_clust" onclick="this.form.submited=this.value;" >
+                                    <input id="submit20" name="k_means" type="submit" value="k_means" onclick="this.form.submited=this.value;" >
+                                    <input id="submit21" name="clustermap" type="submit" value="clustermap" onclick="this.form.submited=this.value;" >
+                                    <input id="submit27" name="dashclustermap" type="submit" value="dashclustermap" onclick="this.form.submited=this.value;" >
+                                    <input id="submit28" name="testdash" type="submit" value="testdash" onclick="this.form.submited=this.value;" >
+                                    <input id="submit29" name="testheatmapdash" type="submit" value="testheatmapdash" onclick="this.form.submited=this.value;" >
+                                    <input id="submit30" name="testaligmentchartdash" type="submit" value="testaligmentchartdash" onclick="this.form.submited=this.value;" >
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="fuzzylogic">
+                            <h5 class="card-title">Instructions about how to launch</h5>
+                            <p class="card-text">To test, use "exemple2.csv" then click on the option you want to use.</p>
+                            <input id="submit25" name="FuzzyWuzzy"   class="btn btn-secondary" type="submit" value="FuzzyWuzzy" onclick="this.form.submited=this.value;" >
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <br/>
+    <br/>
+</div>
+</div>
+{% else %}
+    <div class="row">
+        <p class="text-danger"><strong>pas chargé</strong></p>
+    </div>
+{% endif %}
+<style>
+.files input {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    padding: 120px 0px 85px 35%;
+    text-align: center !important;
+    margin: 0;
+    width: 100% !important;
+}
+
+.files input:focus{
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear; border:1px solid #92b0b3;
+ }
+
+.files {
+    position:relative
+}
+
+.files:after {  pointer-events: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 50px;
+    right: 0;
+    height: 56px;
+    content: "";
+    {#background-image: url("{% static 'img/download.png' %}");#}
+    {% comment %}
+    <a href="https://www.flaticon.com/free-icons/download" title="download icons">Download icons created by Good Ware - Flaticon</a>
+    {% endcomment %}
+    display: block;
+    margin: 0 auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.color input {
+    background-color:#f1f1f1;
+}
+
+.files:before {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    right: 0;
+    height: 57px;
+    content: " Or drop it here. ";
+    display: block;
+    margin: 0 auto;
+    color: #2ea591;
+    font-weight: 600;
+    text-transform: capitalize;
+    text-align: center;
+}
+
+#tab_data {
+background-color: #ffffff;
+}
+
+table {
+color:#0073e6;
+font-size: 16px;
+}
+
+.column-selector th {
+  cursor: pointer;
+}
+</style>
+{%block javascripts %}
+<script>
+var uniq = [];
+var array=[];
+var array2=[];
+var data_column_selected=[];
+var column_name_selected=[];
+var index_column_name_selected=[];
+var label=[];
+var table = $('#example').DataTable({
+    'ordering':false,
+   'paging':true,
+   'searching':true,
+   'select': 'multi',
+    //fieldSeparator: '\t',
+    scrollX: true,
+    scrollCollapse: false,
+        dom: 'Bfrtip',
+        buttons: [
+            'copyFlash',
+            {
+                text: 'TSV',
+                extend: 'csvFlash',
+                fieldSeparator: '\t',
+                extension: '.tsv'
+            }
+        ]
+    });
+var checkboxes = document.querySelectorAll("input[type = 'checkbox']");
+
+$(document).ready(function (){
+
+     table.column(0).data().each( function ( value, index )
+       {
+        label.push(value);
+       });
+    // Handle click event on a checkbox
+    $('#example_wrapper').on('click', 'thead .column-selector input[type="checkbox"]', function(e){
+         var colIdx = $(this).closest('th').index();
+        e.stopPropagation();
+
+
+        if(this.checked)
+        {
+            table.column(colIdx).select();
+            uniq = [...new Set(array)];
+
+        }
+        else
+        {
+            while(array.length > 0) {
+               array.length = 0;
+               array2.length = 0;
+               data_column_selected.length = 0;
+               index_column_name_selected.length = 0;
+            }
+            table.column(colIdx).deselect();
+
+        }
+        //les données des colonnes sélectionner par l'utilisateurs
+        var tmp= table.columns( { selected: true } ).data().each( function ( value, index )
+        {
+            array.push(value);
+
+        } );
+        data_column_selected=array;
+
+       /*  $('#store').on('click', function(){
+            sessionStorage.setItem('myArray', array);
+        });
+        $('#get').on('click', function(){
+            var myArraytable = sessionStorage.getItem('myArray');
+            alert(array);
+        }); */
+        //les indexes des colonnes selectionné par l'utilisateur
+        var tmp2=table.columns({ selected: true }).indexes().each(function ( value)
+        {
+            array2.push(value);
+        });
+        index_column_name_selected=array2;
+    });
+
+    // Handle click event on header cell containg a checkbox
+    $('#example').on('click', 'thead .column-selector th', function(e){
+        $('input[type="checkbox"]', this).trigger('click');
+    });
+
+    $("#option-all").change(function checkAll(myCheckbox){
+        //les données des colonnes sélectionner par l'utilisateurs + on ignore la première colonne du tableau
+        var tmp= table.columns().data().each( function ( value, index )
+            {
+                array.push(value);
+            } );
+
+            if(array.length >= 5){
+                data_column_selected=array.slice(1);
+            }else{
+                data_column_selected=array;
+            }
+
+        //les indexes des colonnes selectionné par l'utilisateur  on ignore la première colonne du tableau
+         var tmp2=table.columns().indexes().each(function ( value)
+            {
+                array2.push(value);
+            });
+
+            if(array2.length >= 5){
+                index_column_name_selected=array2.slice(1);
+            }else{
+                index_column_name_selected=array2;
+            }
+
+    //var IDbutton = document.getElementById("form1")[4];
+
+        if($(this).is(":checked")) {
+            checkboxes.forEach(function(checkbox){
+                checkbox.checked = true;
+                table.columns().select();
+            });
+            console.log("true:" + data_column_selected);
+            sessionStorage.setItem('TableauduCSV', JSON.stringify(data_column_selected));
+            sessionStorage.setItem('entete', JSON.stringify(label));
+
+        }
+        else{
+            while(array.length > 0) {
+                array.length = 0;
+                array2.length = 0;
+                data_column_selected.length = 0;
+                index_column_name_selected.length = 0;
+            }
+            checkboxes.forEach(function(checkbox){
+            checkbox.checked = false;
+            table.columns().deselect();
+            console.log("else:" + data_column_selected);
+            sessionStorage.clear('TableauduCSV');
+            sessionStorage.clear('entete');
+
+            });
+        }
+
+    });
+
+
+//      $(function(){
+//    $('#elements input[type="checkbox"]').prop("checked", true).trigger("change");
+//      });
+
+});
+
+//js pour faire fonctionner la checkboxes "select all"
+//var array=[];
+//var array2=[];
+//var colIdx = $(this).closest('th').index();
+
+
+{% comment %}    $("#store").click(function(){
+        sessionStorage.setItem('TableauduCSV', JSON.stringify(data_column_selected));
+        var retrievedObject = sessionStorage.getItem('TableauduCSV');
+        console.log('retrievedObject: ', JSON.parse(retrievedObject));
+    })
+
+
+    $("#reset").click(function(){
+        sessionStorage.clear('TableauduCSV');
+    }){% endcomment %}
+
+    var test_head = document.getElementById("test_head");
+
+    $("#submit1").click(function(){
+        console.log("1:"+array);
+        console.log("2:"+data_column_selected);
+    })
+
+
+    $("#submit3").click(function(){
+        //data_column_selected = data_column_selected.slice(0, data_column_selected.length-2);
+        //data_column_selected.slice(0, data_column_selected.length-2);
+        //var retrievedObject = sessionStorage.getItem('TableauduCSV');
+        //data_column_selected =  JSON.parse(retrievedObject);
+        //console.log("1:" + data_column_selected);
+        //index_column_name_selected = array2.slice(0, array2.length-2) ;
+
+        //index_column_name_selected = [];
+        if (document.getElementById("option-all").checked == true)
+	{
+
+		data_column_selected = array.slice(0, array.length-2);
+        console.log("2:"+data_column_selected);
+        index_column_name_selected = array2.slice(0, array2.length-2);
+	}
+    })
+
+    $("#submit9").click(function(){
+        sessionStorage.setItem('test_head', JSON.stringify(test_head.innerText));
+    })
+
+    $("#submit10").click(function(){
+        sessionStorage.setItem('test_head', JSON.stringify(test_head.innerText));
+    })
+
+
+
+$(document).on('submit','#form1',function(e)
+{
+    e.preventDefault();
+    var nom_algo= this.submited;
+    $.ajax
+    ({
+        type:'POST',
+        url: '{% url 'phylogene_ajax1' %}',
+        data:{
+                tasks: JSON.stringify(data_column_selected),
+                algo: nom_algo,
+                labelSeq: JSON.stringify(label),
+                entete: JSON.stringify(index_column_name_selected),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+             },
+         success: function()
+        {
+           url_algo ='{% url 'phylogene_run_algo' %}';
+           window.open( url_algo , '_blank');
+        }
+    });
+
+});
+</script>
+
+{% endblock %}
+
+</body>
+
+</html>
