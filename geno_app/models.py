@@ -11,6 +11,7 @@ class Souchefile(models.Model):
     Lineages_tbprofiler = models.CharField("Lineages(tb-profiler)", max_length=75)
     Resistance_tbprofiler = models.CharField("Resistance(tb-profiler)", max_length=75)
     Family_SpolLineages = models.CharField("Family(SpolLineages)", max_length=75)
+    Country = models.CharField("Country", max_length=75)
 
 # class Souche(models.Model):
 #     FilePath = models.CharField(_("FilePath"), max_length=255)
